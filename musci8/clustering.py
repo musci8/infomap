@@ -10,6 +10,12 @@ def INFOMAP(g,weights = None):
 	F.run()
 	T = F.tree
 	M = {node.physIndex: node.moduleIndex() for node in T.leafIter()}
+	L = max(M.values())
+	isolated = set(range(g.vcount())).difference(M.keys())
+	i = 1
+	for n in isolated:
+		M[n] = L+i
+		i+=1
 	g.vs['c'] = [M[i] for i in xrange(g.vcount())]
 	return igraph.VertexClustering.FromAttribute(g,'c')
 	
